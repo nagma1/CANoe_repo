@@ -1,0 +1,58 @@
+/*@!Encoding:1252*/
+includes
+{
+  
+}
+
+variables
+{
+  int count;
+  message 0x3 Txmsg1;
+  message 0x4 Txmsg2;
+}
+
+on start
+{
+  write("Start block executed");
+  write("Press s to transmit messages with id 3 and 4");
+  Txmsg1.dlc=3;
+  Txmsg2.dlc=4;
+}
+
+on key 's'
+{
+  count++;
+  write("key s pressed");
+   Txmsg1.byte(0)=1;
+   Txmsg1.byte(1)=2;
+   Txmsg1.byte(2)=3;
+  output(Txmsg1);
+   Txmsg2.byte(0)=10;
+   Txmsg2.byte(1)=11;
+   Txmsg2.byte(2)=12;
+   Txmsg2.byte(3)=13;
+  output(Txmsg2);
+}
+  
+on message 0x1
+{
+  int i;
+  write("Recevied message %d\n",this.id);
+  for(i=0;i<this.dlc;i++)
+  write("Byte(%d):%X",i,this.byte(i));
+}
+
+on message 0x2
+{
+  int i;
+  write("Recevied message %d\n",this.id);
+  for(i=0;i<this.dlc;i++)
+  write("Byte(%di):%X",i,this.byte(i));
+}
+
+
+on stopMeasurement
+{
+  write("Stop block executed");
+}
+
